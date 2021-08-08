@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# File: nowplaying
+# Author: Abhishek Yadav
+# Upstream: https://github.com/b4skyx/unix-scripts
+
+# Script to notify your current playing track with dunst.
+# I use it with ncmpcpp
+
+fname=`ncmpcpp --quiet --current-song "%f"`
+file=`find /data/Music -name "$fname"`
+
+ffmpeg -i "$file" -loglevel quiet  -an -vcodec copy -y /tmp/cover.jpg
+if [ -e /tmp/cover.jpg ]
+then
+	notify-send "Now Playing" "$(mpc --format '%title% \n%artist% - %album%' current)"\
+		-i /tmp/cover.jpg \
+		-h string:synchronous:nowplaying
+	rm /tmp/cover.jpg
+else
+	notify-send "Now Playing" "$(mpc --format '%title% \n%artist% - %album%' current)" \
+		 -i ~/player_icon.png \
+		-h string:synchronous:nowplaying
+fi

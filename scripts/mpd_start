@@ -1,0 +1,10 @@
+# !/bin/bash
+
+# Start mpd+mpris daemons
+
+pidof mpd || mpd &
+until pids=$(pidof mpd)
+do
+    sleep 1
+done
+pgrep mpd-mpris || mpDris2 &

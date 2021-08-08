@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# File: micfn
+# Author: Abhishek Yadav
+# Upstream: https://github.com/b4skyx/unix-scripts
+
+# Toggle your current microphone with a keybind.
+
+function helpfn() {
+	echo "micfn, a quick mic toggle script"
+}
+
+active_port=$(pactl list | sed -n '/^Source/,/^$/p' | grep 'Active Port' | cut -d ' ' -f3)
+
+if amixer get Capture | grep "\[off\]" > /dev/null
+then
+	status="OFF"
+else
+	status="ON"
+fi
+
+function toggle() {
+	amixer set Capture toggle > /dev/null
+	if amixer get Capture | grep "\[off\]" > /dev/null
+	then
+		notify-send -i ~/.assets/microphone_muted.png -t 3000 "$active_port" "Microphone OFF!" -h string:synchronous:micfn
+	else
+		notify-send -i ~/.assets/microphone.png -t 3000 "$active_port" "Microphone ON~" -h string:synchronous:micfn
+	fi
+}
+
+if [ "$1" == "-t" -o "$1" == "--toggle" ]; then
+	toggle
+	exit 0
+elif [ $# -eq 0 ]; then
+	echo $status
+fi
