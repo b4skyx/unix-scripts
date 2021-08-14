@@ -19,7 +19,6 @@ then
 	mailread=$(cat /tmp/unread-mail-count)
 	if [[ "$unread" -gt "$b$mailread" ]] && [ "" != "$icon" ]
 	then
-		notify-send -i ~/.assets/email.png "New Mail!!" "You have $unread new emails."
 		echo "$unread" > /tmp/unread-mail-count
 	fi
 else

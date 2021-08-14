@@ -7,4 +7,4 @@ until pids=$(pidof mpd)
 do
     sleep 1
 done
-pgrep mpd-mpris || mpDris2 &
+pgrep mpDris2 || mpDris2 &
